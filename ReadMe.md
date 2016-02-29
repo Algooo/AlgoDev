@@ -1,4 +1,7 @@
+# Developer Dokumentation
 Install VisualStudio2015
+
+Get Project from Github
 
 Install NodeJs Tools for Visual Studio 
 	NTVS 1.1 VS 2015.exe
