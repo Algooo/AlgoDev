@@ -1,0 +1,13 @@
+{
+    "version": "1.0.0",
+    "description": "Presentation website of AlgoDev",
+    "keywords": ["Webdevelopment", "Website"],
+    "author": "Alexander Gottfried <alexander.gottfried89@gmail.com>",
+    "dependencies": {
+      
+    },
+    "main": "index",
+    "engines": {
+        "node": ">= 5.7.0"
+    }
+}
