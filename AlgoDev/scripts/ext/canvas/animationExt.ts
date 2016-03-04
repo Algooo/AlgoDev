@@ -21,11 +21,14 @@ module AnimationExt {
 
         /* Animation functions */
         public animateObjectArray(objArr: Array<any>, stageObj: StageObject) {
-            var animArrayPromise = new Promise(function (resolve, reject) {
-                return this.animateObjectPromise(objArr, 0, stageObj, resolve, reject);
-            });
+            let self = this;
+            var animArrayPromise = new Promise((resolve, reject) => this.animateObjectPromiseResolver(resolve, reject, objArr, stageObj));
             return animArrayPromise;
         };
+
+        private animateObjectPromiseResolver(resolve: PromiseResolve, reject: PromiseReject, objArr: Array<any>, stageObj: StageObject): void {
+            return this.animateObjectPromise(objArr, 0, stageObj, resolve, reject);
+        }
 
         private animateObjectPromise(objArr: Array<any>, index: number, stageObj: StageObject,
             resolve: PromiseResolve, reject: PromiseReject): void {
@@ -61,28 +64,28 @@ module AnimationExt {
                 end = end - ((end - start) * obj.progress);
             }
 
-            var animObjectPromise = new Promise(function (resolve, reject) {
-                var animFrameEndPromise = new Promise(function (resolve, reject) {
-                    this.step(obj, stageObj, end, imageData, resolve, reject);
-                });
-                animFrameEndPromise.then(function () {
-                    // Restore ImageData after animation and Draw full progress
-                    if (imageData != null) {
-                        stageObj.context.putImageData(imageData, drawingRect.x, drawingRect.y);
-                    }
-                    obj.drawPath(stageObj);
-                    resolve();
-                })
-                    .catch(function (response) {
-                        console.log(response);
-                        reject();
-                    });
-
-            });
+            var animObjectPromise = new Promise((resolve, reject) => this.animObjectResolver(resolve, reject, obj, stageObj, end, imageData, drawingRect));
             return animObjectPromise;
         };
 
-        private step(obj: any, stageObj: StageObject, end: number, imgDataBeforeAnimation: ImageData, resolve: PromiseResolve, reject: PromiseReject) {
+        private animObjectResolver(resolve: PromiseResolve, reject: PromiseReject, obj: any, stageObj: StageObject, end: number, imageData: ImageData, drawingRect: any): void {
+            var animFrameEndPromise = new Promise((resolve, reject) => this.step(resolve, reject, obj, stageObj, end, imageData));
+            animFrameEndPromise.then(function () {
+                // Restore ImageData after animation and Draw full progress
+                if (imageData != null) {
+                    stageObj.context.putImageData(imageData, drawingRect.x, drawingRect.y);
+                }
+                obj.drawPath(stageObj);
+                resolve();
+            })
+                .catch(function (response) {
+                    console.log(response);
+                    reject();
+                });
+        }
+
+        private step(resolve: PromiseResolve, reject: PromiseReject, obj: any, stageObj: StageObject, end: number, imgDataBeforeAnimation: ImageData) {
+            let self = this;
             var timestamp = new Date().getTime();
             var drawingRect = obj.getDrawingRectangle(stageObj);
 
@@ -106,7 +109,7 @@ module AnimationExt {
             }
             if (obj.progress < 1) {
                 var callback: FrameRequestCallback;
-                callback = function () { this.step(obj, stageObj, end, imgDataBeforeAnimation, resolve, reject) };
+                callback = () => this.step(resolve, reject, obj, stageObj, end, imgDataBeforeAnimation);
                 var nextRequestFrameFunc = RequestNextAnimationFrame.GetRquestAnimationFrame();
                 nextRequestFrameFunc(callback);
                 return

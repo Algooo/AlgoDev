@@ -9,10 +9,11 @@
 // directory.
 "use strict";
 requirejs.config({
+    baseUrl: './scripts/',
     paths: {
-        jquery: 'scripts/vendor/jquery.min',
-        domReady: 'scripts/vendor/domReady',
-        main: 'scripts/app/main'
+        jquery: 'vendor/jquery',
+        domReady: 'vendor/domReady',
+        main: 'app/main'
     },
     shim: {
         jquery: {

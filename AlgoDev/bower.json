@@ -1,0 +1,28 @@
+{
+  "name": "AlgoDev",
+  "description": "Presentation website of AlgoDev",
+  "main": "index.html",
+  "authors": [
+    "Alexander Gottfried <alexander.gottfried89@gmail.com>"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "Webdevelopment",
+    "Website"
+  ],
+  "homepage": "https://github.com/Algooo/AlgoDev",
+  "moduleType": [],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": ">=2.2.1",
+    "requirejs": ">=2.1.22",
+    "domReady": "requirejs-domready#>=2.0.1"
+  }
+}

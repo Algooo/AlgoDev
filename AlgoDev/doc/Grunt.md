@@ -20,3 +20,9 @@
 
 	};
 	```
+
+## Install Copy grunt package 
+	npm install grunt-contrib-copy --save-dev
+
+## Run Grunt
+	grunt <taskname>

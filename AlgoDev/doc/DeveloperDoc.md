@@ -27,3 +27,11 @@ Install NodeJs Tools for Visual Studio
 	npm install
 
 
+## Install bower packages
+	bower install
+
+
+## Run Grunt scripts
+
+### Copy bower components to scripts/vendor folder
+	grunt copyDev

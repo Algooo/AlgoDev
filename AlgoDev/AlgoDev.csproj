@@ -35,7 +35,7 @@
     <TypeScriptCompile Include="scripts\app\algoDevCloud.ts" />
     <Content Include="scripts\app\algoDevText.js" />
     <Content Include="scripts\vendor\domReady.js" />
-    <Content Include="scripts\vendor\jquery.min.js" />
+    <Content Include="scripts\vendor\jquery.js" />
     <Content Include="scripts\vendor\require.js" />
     <Content Include="web.config" />
     <TypeScriptCompile Include="scripts\_declare\core.d.ts" />
@@ -48,6 +48,8 @@
     <Content Include="doc\Node.md" />
     <Content Include="doc\Grunt.md" />
     <Content Include="ReadMe.md" />
+    <Content Include="doc\bower.md" />
+    <Content Include="bower.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -85,7 +87,7 @@
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
     <TypeScriptSourceMap>true</TypeScriptSourceMap>
-    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptTarget>ES6</TypeScriptTarget>
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
