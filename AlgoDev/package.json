@@ -1,13 +1,29 @@
 {
-    "version": "1.0.0",
-    "description": "Presentation website of AlgoDev",
-    "keywords": ["Webdevelopment", "Website"],
-    "author": "Alexander Gottfried <alexander.gottfried89@gmail.com>",
-    "dependencies": {
-      
-    },
-    "main": "index",
-    "engines": {
-        "node": ">= 5.7.0"
-    }
+  "name": "AlgoDev",
+  "version": "1.0.0",
+  "description": "Presentation website of AlgoDev",
+  "main": "index.html",
+  "author": "",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Algooo/AlgoDev"
+  },
+  "keywords": [
+    "Webdevelopment",
+    "Website"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Algooo/AlgoDev/issues"
+  },
+  "homepage": "https://github.com/Algooo/AlgoDev",
+  "devDependencies": {
+    "grunt": ">=0.4.5"
+  }
 }
