@@ -1,19 +1,17 @@
 "use strict";
 
-import AlgoDevAnimation = require("app/algoDevAnimation");
+import i_ada = require("app/algoDevAnimation");
 
-class Main {
+export class Main {
       
     constructor() {
         
     }
 
     public static start() {
-        var algoDevAnimationObj = new AlgoDevAnimation();
+        var algoDevAnimationObj = new i_ada.AlgoDevAnimation();
         algoDevAnimationObj.init();
     }
 }
 
 Main.start();
-
-export = Main;

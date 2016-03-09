@@ -1,20 +1,20 @@
 "use strict";
-import DrawingExt = require('ext/canvas/drawingExt');
-import StageObject = require('ext/canvas/stageObject');
-import AlgoDevCloud = require('app/algoDevCloud');
+import i_de = require('ext/canvas/drawingExt');
+import i_so = require('ext/canvas/stageObject');
+import i_adc = require('app/algoDevCloud');
 
 
-class AlgoDevAnimation {
+export class AlgoDevAnimation {
 
     private canvas: HTMLCanvasElement;
     private mainContext: CanvasRenderingContext2D;
     private resizeTimerId: number;
-    private stageObject: StageObject;
+    private stageObject: i_so.StageObject;
 
-    private algoDevCloudObj: AlgoDevCloud;
+    private algoDevCloudObj: i_adc.AlgoDevCloud;
 
     constructor() {
-
+     
         this.canvas = <HTMLCanvasElement>document.getElementById("algoDevCanvas");
         if (this.canvas != undefined) {
             this.mainContext = this.canvas.getContext('2d');
@@ -40,7 +40,7 @@ class AlgoDevAnimation {
             this.resize();
 
             // Initialize Cloud
-            this.algoDevCloudObj = new AlgoDevCloud(this.stageObject);
+            this.algoDevCloudObj = new i_adc.AlgoDevCloud(this.stageObject);
 
 
             // Start cloud animation
@@ -69,17 +69,17 @@ class AlgoDevAnimation {
         var drawingWidth = this.canvas.width;
         var drawingHeight = this.canvas.height;
         var drawingMargin = Math.floor(this.canvas.width / 100);
-        var drawingOrigin = new DrawingExt.Point(0, 0);
+        var drawingOrigin = new i_de.Point(0, 0);
         while (drawingWidth > this.canvas.height) {
             drawingWidth -= drawingMargin;
             drawingHeight -= drawingMargin;
         }
         drawingWidth -= drawingMargin * 2;
         drawingHeight = drawingWidth;
-        drawingOrigin = new DrawingExt.Point((this.canvas.width / 2) - (drawingWidth / 2),
+        drawingOrigin = new i_de.Point((this.canvas.width / 2) - (drawingWidth / 2),
             (this.canvas.height / 2) - (drawingHeight / 2));
 
-        this.stageObject = new StageObject(drawingOrigin.x, drawingOrigin.y, drawingWidth, drawingHeight, this.mainContext);
+        this.stageObject = new i_so.StageObject(drawingOrigin.x, drawingOrigin.y, drawingWidth, drawingHeight, this.mainContext);
         this.stageObject.showFps = true;
     };
 
@@ -105,7 +105,7 @@ class AlgoDevAnimation {
             this.setStageObj();
 				
             // Draw drawing Area
-            var drawingRect = new DrawingExt.Rectangle(this.stageObject.x - 1, this.stageObject.y - 1,
+            var drawingRect = new i_de.Rectangle(this.stageObject.x - 1, this.stageObject.y - 1,
                 this.stageObject.width + 2, this.stageObject.height + 2);
             drawingRect.stroke('#000000', this.stageObject.context);
 
@@ -117,5 +117,3 @@ class AlgoDevAnimation {
         }
     }
 }
-
-export = AlgoDevAnimation;

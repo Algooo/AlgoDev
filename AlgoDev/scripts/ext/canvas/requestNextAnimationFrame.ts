@@ -4,7 +4,7 @@ interface RequestCallback {
 }
 
 
-class RequestNextAnimationFrame {
+export class RequestNextAnimationFrame {
 
     constructor() {
        
@@ -84,5 +84,3 @@ class RequestNextAnimationFrame {
             };
     }
 }
-
-export = RequestNextAnimationFrame;

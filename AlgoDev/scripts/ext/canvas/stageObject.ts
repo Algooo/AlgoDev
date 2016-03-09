@@ -1,5 +1,5 @@
 "use strict";
-class StageObject{
+export class StageObject{
 
     public x: number;
     public y: number;
@@ -22,5 +22,3 @@ class StageObject{
         this.offScreenContext = this.offScreenCanvas.getContext("2d");
     }
 }
-
-export = StageObject;
