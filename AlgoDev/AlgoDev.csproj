@@ -25,22 +25,22 @@
     <Content Include="css\app.css" />
     <Content Include="Gruntfile.js" />
     <Content Include="index.html" />
-    <TypeScriptCompile Include="scripts\app\main.ts" />
-    <TypeScriptCompile Include="scripts\requirejsConfig.ts" />
-    <TypeScriptCompile Include="scripts\app\algoDevAnimation.ts" />
-    <TypeScriptCompile Include="scripts\ext\canvas\animationExt.ts" />
-    <TypeScriptCompile Include="scripts\ext\canvas\drawingExt.ts" />
-    <TypeScriptCompile Include="scripts\ext\canvas\requestNextAnimationFrame.ts" />
-    <TypeScriptCompile Include="scripts\ext\canvas\stageObject.ts" />
-    <TypeScriptCompile Include="scripts\app\algoDevCloud.ts" />
-    <Content Include="scripts\app\algoDevText.js" />
-    <Content Include="scripts\vendor\domReady.js" />
-    <Content Include="scripts\vendor\jquery.js" />
-    <Content Include="scripts\vendor\require.js" />
+    <TypeScriptCompile Include="ts\app\main.ts" />
+    <TypeScriptCompile Include="ts\requirejsConfig.ts" />
+    <TypeScriptCompile Include="ts\app\algoDevAnimation.ts" />
+    <TypeScriptCompile Include="ts\ext\canvas\animationExt.ts" />
+    <TypeScriptCompile Include="ts\ext\canvas\drawingExt.ts" />
+    <TypeScriptCompile Include="ts\ext\canvas\requestNextAnimationFrame.ts" />
+    <TypeScriptCompile Include="ts\ext\canvas\stageObject.ts" />
+    <TypeScriptCompile Include="ts\app\algoDevCloud.ts" />
+    <Content Include="ts\app\algoDevText.js" />
+    <Content Include="js\lib\domReady.js" />
+    <Content Include="js\lib\jquery.js" />
+    <Content Include="js\lib\require.js" />
     <Content Include="web.config" />
-    <TypeScriptCompile Include="scripts\_declare\core.d.ts" />
-    <TypeScriptCompile Include="scripts\_declare\jquery.d.ts" />
-    <TypeScriptCompile Include="scripts\_declare\require.d.ts" />
+    <TypeScriptCompile Include="ts\_declare\core.d.ts" />
+    <TypeScriptCompile Include="ts\_declare\jquery.d.ts" />
+    <TypeScriptCompile Include="ts\_declare\require.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="package.json" />
@@ -57,7 +57,9 @@
       <DependentUpon>web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="es6\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>
@@ -91,13 +93,15 @@
     <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
     <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
     <TypeScriptNoImplicitAny>True</TypeScriptNoImplicitAny>
-    <TypeScriptModuleKind>System</TypeScriptModuleKind>
+    <TypeScriptModuleKind>AMD</TypeScriptModuleKind>
     <TypeScriptOutFile />
-    <TypeScriptOutDir />
+    <TypeScriptOutDir>.\es6</TypeScriptOutDir>
     <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
     <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
-    <TypeScriptMapRoot />
-    <TypeScriptSourceRoot />
+    <TypeScriptMapRoot>
+    </TypeScriptMapRoot>
+    <TypeScriptSourceRoot>
+    </TypeScriptSourceRoot>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>

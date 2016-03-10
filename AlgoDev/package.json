@@ -5,7 +5,8 @@
   "main": "index.html",
   "author": "",
   "directories": {
-    "doc": "doc"
+    "doc": "doc",
+    "packages": "jspm_packages"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -24,7 +25,17 @@
   },
   "homepage": "https://github.com/Algooo/AlgoDev",
   "devDependencies": {
+    "bower": ">=1.7.7",
     "grunt": ">=0.4.5",
-    "grunt-contrib-copy": ">=0.8.2"
+    "grunt-cli": ">=0.1.13",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-copy": ">=0.8.2",
+    "tsd": ">=0.6.5"
+  },
+  "jspm": {
+    "directories": {
+      "doc": "doc"
+    },
+    "devDependencies": {}
   }
 }

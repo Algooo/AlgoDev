@@ -13,16 +13,6 @@ Install NodeJs Tools for Visual Studio
 	https://github.com/Microsoft/nodejstools
 
 
-## Install global Packages	
-	Install Typescript Definition Manager
-		npm install tsd -g
-
-	Install Grunt-cli
-		npm install -g grunt-cli
-
-	Install Bower
-		npm install -g bower
-
 ## Install local Packages
 	npm install
 
@@ -32,6 +22,9 @@ Install NodeJs Tools for Visual Studio
 
 
 ## Run Grunt scripts
-
-### Copy bower components to scripts/vendor folder
-	grunt copyDev
+	
+	For development
+		grunt dev
+	
+	For production
+		grunt prod

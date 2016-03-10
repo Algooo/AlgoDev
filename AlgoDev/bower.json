@@ -11,7 +11,7 @@
     "Website"
   ],
   "homepage": "https://github.com/Algooo/AlgoDev",
-  "moduleType": [],
+  "moduleType": [ ],
   "private": true,
   "ignore": [
     "**/.*",
