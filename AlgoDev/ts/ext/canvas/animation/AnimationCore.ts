@@ -6,13 +6,11 @@ import StageObject = require("ext/canvas/StageObject");
 // TODO Animation static machen und properties in StageObject auslagern
 class AnimationCore {
     private lastRequestAnimationFrame: number;
-    private lastFpsUpdateTime: number;
     private lastFpsUpdate: number;
 
     constructor() {
         this.lastRequestAnimationFrame = 0;
         this.lastFpsUpdate = 0;
-        this.lastFpsUpdateTime = 0;
     }
 
     /* Animation functions */
@@ -94,11 +92,8 @@ class AnimationCore {
         obj.drawPath(stageObj);
 
         // FPS
-        if (stageObj.showFps) {
-            this.drawFps(timestamp, stageObj);
-        }
-
-
+        stageObj.drawFps(timestamp, this.lastRequestAnimationFrame);
+        
         this.lastRequestAnimationFrame = timestamp;
 
         if (stageObj.animationActive == false) {
@@ -116,41 +111,6 @@ class AnimationCore {
             framesResolve();
             return;
         }
-    };
-
-    private drawFps(now: number, stageObj: StageObject) {
-        var fps = 0;
-
-        if (this.lastFpsUpdateTime > 0) {
-
-            var timeDiff = now - this.lastFpsUpdateTime;
-            fps = 1000 / timeDiff;
-
-            stageObj.context.save();
-            stageObj.context.clearRect(stageObj.x + 5, stageObj.y + 5, 150, 30);
-            stageObj.context.font = 'normal 20pt Consolas';
-            stageObj.context.fillText(Math.round(fps) + " fps", stageObj.x + 10, stageObj.y + 25);
-            stageObj.context.restore();
-
-            
-        }
-        this.lastFpsUpdateTime = now;
-
-        //fps = 1000 / (now - this.lastRequestAnimationFrame);
-        //this.lastRequestAnimationFrame = now;
-
-        //if (now - this.lastFpsUpdateTime > 1000) {
-        //    this.lastFpsUpdateTime = now;
-        //    this.lastFpsUpdate = fps;
-        //}
-        //if (this.lastFpsUpdate > 0) {
-        //    stageObj.context.save();
-        //    stageObj.context.clearRect(stageObj.x + 5, stageObj.y + 5, 150, 30);
-        //    stageObj.context.font = 'normal 20pt Consolas';
-        //    stageObj.context.fillText(Math.round(this.lastFpsUpdate) + " fps", stageObj.x + 10, stageObj.y + 25);
-        //    stageObj.context.restore();
-        //    this.lastFpsUpdate = 0;
-        //}
     };
 }
 
