@@ -1,6 +1,6 @@
 "use strict";
 
-import i_ada = require("app/algoDevAnimation");
+import AlgoDevAnimation = require("app/AlgoDevAnimation");
 
 export class Main {
       
@@ -9,7 +9,7 @@ export class Main {
     }
 
     public static start() {
-        var algoDevAnimationObj = new i_ada.AlgoDevAnimation();
+        var algoDevAnimationObj = new AlgoDevAnimation();
         algoDevAnimationObj.init();
     }
 }

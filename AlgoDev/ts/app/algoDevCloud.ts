@@ -1,7 +1,8 @@
 "use strict";
-import i_de = require('ext/canvas/drawingExt');
-import i_so = require('ext/canvas/stageObject');
-import i_ae = require('ext/canvas/animationExt');
+import Drawing = require('ext/canvas/Drawing');
+import StageObject = require('ext/canvas/StageObject');
+import AnimationCore = require('ext/canvas/animation/AnimationCore');
+import AnimationObjects = require('ext/canvas/animation/AnimationObjects');
 import $ = require('jquery');
 
 //import AlgoDevText = require('app/algoDevText');
@@ -27,37 +28,37 @@ class MathExt {
 }
 /////////////////////////
 
-export class AlgoDevCloud {
+class AlgoDevCloud {
     
-    private stageObj: i_so.StageObject;
+    private stageObj: StageObject;
     public initialized: boolean;
 
     // Cloud Logo options
-    public strokeStyleColor: i_de.RgbaColor;
+    public strokeStyleColor: Drawing.RgbaColor;
     public cloudLineCap: string;
 
     private cloudLineWidth: number;
     private cloudWidth: number;
     private cloudHeight: number;
-    private cloudOrigin: i_de.Point;
+    private cloudOrigin: Drawing.Point;
 
-    private cloudLeftCurve: i_ae.QuadraticCurveAnimationObject;
-    private cloudMiddleCurve: i_ae.QuadraticCurveAnimationObject;
-    private cloudRightCurve: i_ae.QuadraticCurveAnimationObject;
-    private cloudBottomLine: i_ae.LineAnimationObject;
-    private cloudGradientFill: i_ae.GradientFillAnimationObject;
+    private cloudLeftCurve: AnimationObjects.QuadraticCurveAnimationObject;
+    private cloudMiddleCurve: AnimationObjects.QuadraticCurveAnimationObject;
+    private cloudRightCurve: AnimationObjects.QuadraticCurveAnimationObject;
+    private cloudBottomLine: AnimationObjects.LineAnimationObject;
+    private cloudGradientFill: AnimationObjects.GradientFillAnimationObject;
 
-    private animationObj: i_ae.Animation;
+    private animationObj: AnimationCore;
 
-    constructor(stageObj: i_so.StageObject) {
+    constructor(stageObj: StageObject) {
         this.stageObj = stageObj;
 
         this.resizeCloud();
 
-        this.strokeStyleColor = new i_de.RgbaColor(0, 0, 0, 1)
+        this.strokeStyleColor = new Drawing.RgbaColor(0, 0, 0, 1)
         this.cloudLineCap = "butt";
         // TODO auslagern in aufrufende Klasse
-        this.strokeStyleColor = new i_de.RgbaColor(255, 0, 102, 1);
+        this.strokeStyleColor = new Drawing.RgbaColor(255, 0, 102, 1);
         this.cloudLineCap = "round";
         //////////////
         //this.cloudLineWidth = 1;
@@ -72,12 +73,12 @@ export class AlgoDevCloud {
         this.initCloudBottomLine();
         this.initCloudGradientFill();
 
-        this.animationObj = new i_ae.Animation();
+        this.animationObj = new AnimationCore();
         this.initialized = true;
     }
 
     private initCloudLeftCurve = function () {
-        this.cloudLeftCurve = new i_ae.QuadraticCurveAnimationObject(this.stageObj);
+        this.cloudLeftCurve = new AnimationObjects.QuadraticCurveAnimationObject(this.stageObj);
         this.cloudLeftCurve.strokeStyle = this.strokeStyleColor;
         this.cloudLeftCurve.lineCap = this.cloudLineCap;
         this.cloudLeftCurve.duration = 500;
@@ -85,7 +86,7 @@ export class AlgoDevCloud {
     };
 
     private initCloudMiddleCurve() {
-        this.cloudMiddleCurve = new i_ae.QuadraticCurveAnimationObject(this.stageObj);
+        this.cloudMiddleCurve = new AnimationObjects.QuadraticCurveAnimationObject(this.stageObj);
         this.cloudMiddleCurve.strokeStyle = this.strokeStyleColor;
         this.cloudMiddleCurve.lineCap = this.cloudLineCap;
         this.cloudMiddleCurve.duration = 500;
@@ -93,7 +94,7 @@ export class AlgoDevCloud {
     };
 
     private initCloudRightCurve() {
-        this.cloudRightCurve = new i_ae.QuadraticCurveAnimationObject(this.stageObj);
+        this.cloudRightCurve = new AnimationObjects.QuadraticCurveAnimationObject(this.stageObj);
         this.cloudRightCurve.strokeStyle = this.strokeStyleColor;
         this.cloudRightCurve.lineCap = this.cloudLineCap;
         this.cloudRightCurve.duration = 500;
@@ -101,7 +102,7 @@ export class AlgoDevCloud {
     };
 
     private initCloudBottomLine() {
-        this.cloudBottomLine = new i_ae.LineAnimationObject(this.stageObj);
+        this.cloudBottomLine = new AnimationObjects.LineAnimationObject(this.stageObj);
         this.cloudBottomLine.strokeStyle = this.strokeStyleColor;
         this.cloudBottomLine.lineCap = this.cloudLineCap;
         this.cloudBottomLine.duration = 500;
@@ -109,7 +110,7 @@ export class AlgoDevCloud {
     };
 
     private initCloudGradientFill() {
-        this.cloudGradientFill = new i_ae.GradientFillAnimationObject(this.stageObj);
+        this.cloudGradientFill = new AnimationObjects.GradientFillAnimationObject(this.stageObj);
         this.cloudGradientFill.fillStyle = this.strokeStyleColor;
         this.cloudGradientFill.duration = 1000;
         this.cloudGradientFill.distance = 0.1;
@@ -120,7 +121,7 @@ export class AlgoDevCloud {
         this.cloudLineWidth = this.stageObj.width > this.stageObj.height ? this.stageObj.width / 20 : this.stageObj.height / 20;
         this.cloudWidth = this.stageObj.width - this.cloudLineWidth * 2;
         this.cloudHeight = this.stageObj.height - this.cloudLineWidth * 2;
-        this.cloudOrigin = new i_de.Point(this.stageObj.x + this.cloudLineWidth, this.stageObj.y + this.cloudLineWidth);
+        this.cloudOrigin = new Drawing.Point(this.stageObj.x + this.cloudLineWidth, this.stageObj.y + this.cloudLineWidth);
 			
         //temp variables
         this.resizeCloudLeftCurve();
@@ -136,11 +137,11 @@ export class AlgoDevCloud {
             var ch = this.cloudHeight;
 
             this.cloudLeftCurve.lineWidth = this.cloudLineWidth;
-            this.cloudLeftCurve.startP = new i_de.Point(this.cloudOrigin.x + MathExt.sixteenth(cw),
+            this.cloudLeftCurve.startP = new Drawing.Point(this.cloudOrigin.x + MathExt.sixteenth(cw),
                 this.cloudOrigin.y + MathExt.half(ch) + MathExt.quarter(ch));
-            this.cloudLeftCurve.endP = new i_de.Point(this.cloudOrigin.x + MathExt.third(cw) - MathExt.sixteenth(cw),
+            this.cloudLeftCurve.endP = new Drawing.Point(this.cloudOrigin.x + MathExt.third(cw) - MathExt.sixteenth(cw),
                 this.cloudOrigin.y + MathExt.third(ch) + MathExt.eighth(ch));
-            this.cloudLeftCurve.controlP = new i_de.Point(this.cloudOrigin.x - MathExt.sixteenth(cw),
+            this.cloudLeftCurve.controlP = new Drawing.Point(this.cloudOrigin.x - MathExt.sixteenth(cw),
                 this.cloudOrigin.y + MathExt.half(ch));
         }
     };
@@ -151,11 +152,11 @@ export class AlgoDevCloud {
             var ch = this.cloudHeight;
 
             this.cloudMiddleCurve.lineWidth = this.cloudLineWidth;
-            this.cloudMiddleCurve.startP = new i_de.Point(this.cloudOrigin.x + MathExt.third(cw) - MathExt.sixteenth(cw),
+            this.cloudMiddleCurve.startP = new Drawing.Point(this.cloudOrigin.x + MathExt.third(cw) - MathExt.sixteenth(cw),
                 this.cloudOrigin.y + MathExt.third(ch) + MathExt.eighth(ch));
-            this.cloudMiddleCurve.endP = new i_de.Point(this.cloudOrigin.x + (MathExt.third(cw) * 2) + MathExt.sixteenth(cw),
+            this.cloudMiddleCurve.endP = new Drawing.Point(this.cloudOrigin.x + (MathExt.third(cw) * 2) + MathExt.sixteenth(cw),
                 this.cloudOrigin.y + MathExt.third(ch) + MathExt.sixteenth(ch));
-            this.cloudMiddleCurve.controlP = new i_de.Point(this.cloudOrigin.x + (MathExt.third(cw) * 2) - MathExt.quarter(cw),
+            this.cloudMiddleCurve.controlP = new Drawing.Point(this.cloudOrigin.x + (MathExt.third(cw) * 2) - MathExt.quarter(cw),
                 this.cloudOrigin.y + MathExt.eighth(ch));
         }
     };
@@ -166,11 +167,11 @@ export class AlgoDevCloud {
             var ch = this.cloudHeight;    
 
             this.cloudRightCurve.lineWidth = this.cloudLineWidth;
-            this.cloudRightCurve.startP = new i_de.Point(this.cloudOrigin.x + (MathExt.third(cw) * 2) + MathExt.sixteenth(cw),
+            this.cloudRightCurve.startP = new Drawing.Point(this.cloudOrigin.x + (MathExt.third(cw) * 2) + MathExt.sixteenth(cw),
                 this.cloudOrigin.y + MathExt.third(ch) + MathExt.sixteenth(ch));
-            this.cloudRightCurve.endP = new i_de.Point(this.cloudOrigin.x + this.cloudWidth - MathExt.eighth(cw),
+            this.cloudRightCurve.endP = new Drawing.Point(this.cloudOrigin.x + this.cloudWidth - MathExt.eighth(cw),
                 this.cloudOrigin.y + MathExt.half(ch) + MathExt.quarter(ch));
-            this.cloudRightCurve.controlP = new i_de.Point(this.cloudOrigin.x + this.cloudWidth + MathExt.sixteenth(cw),
+            this.cloudRightCurve.controlP = new Drawing.Point(this.cloudOrigin.x + this.cloudWidth + MathExt.sixteenth(cw),
                 this.cloudOrigin.y + MathExt.third(ch) + MathExt.eighth(ch));
         }
     };
@@ -181,9 +182,9 @@ export class AlgoDevCloud {
             var ch = this.cloudHeight;
 
             this.cloudBottomLine.lineWidth = this.cloudLineWidth;
-            this.cloudBottomLine.startP = new i_de.Point(this.cloudOrigin.x + this.cloudWidth - MathExt.eighth(cw),
+            this.cloudBottomLine.startP = new Drawing.Point(this.cloudOrigin.x + this.cloudWidth - MathExt.eighth(cw),
                 this.cloudOrigin.y + MathExt.half(ch) + MathExt.quarter(ch));
-            this.cloudBottomLine.endP = new i_de.Point(this.cloudOrigin.x + MathExt.sixteenth(cw),
+            this.cloudBottomLine.endP = new Drawing.Point(this.cloudOrigin.x + MathExt.sixteenth(cw),
                 this.cloudOrigin.y + MathExt.half(ch) + MathExt.quarter(ch));
         }
     };
@@ -191,7 +192,7 @@ export class AlgoDevCloud {
     private resizeCloudGradientFill() {
         if (this.cloudGradientFill != null) {
             this.cloudGradientFill.startP = this.cloudLeftCurve.startP;
-            this.cloudGradientFill.endP = new i_de.Point(this.cloudRightCurve.controlP.x, this.cloudMiddleCurve.controlP.y);
+            this.cloudGradientFill.endP = new Drawing.Point(this.cloudRightCurve.controlP.x, this.cloudMiddleCurve.controlP.y);
         }
     };
 
@@ -224,7 +225,7 @@ export class AlgoDevCloud {
             this.cloudBottomLine
         ];
 
-        this.animationObj.animateObjectArray(animationObjectArr, this.stageObj)
+        this.animationObj.animateObjects(animationObjectArr, this.stageObj)
             .then((response: any) => {
                 var ctx = this.stageObj.context;
                 this.drawCloudPath();
@@ -255,7 +256,7 @@ export class AlgoDevCloud {
         var animObjArr = [
             this.cloudGradientFill
         ];
-        this.animationObj.animateObjectArray(animObjArr, this.stageObj)
+        this.animationObj.animateObjects(animObjArr, this.stageObj)
             .then(function (response: any) {
                 //$.when(this.animateAlgoDevText())
                 //    .done(function (r) {
@@ -287,7 +288,8 @@ export class AlgoDevCloud {
         //return animTextDef.promise();
     };
 }
-		
+
+export = AlgoDevCloud;
 
 		
 		
