@@ -1,30 +1,68 @@
 "use strict";
+
+import AnimationCore = require('ext/canvas/animation/AnimationCore');
+
 class StageObject{
 
     public x: number;
     public y: number;
     public width: number;
     public height: number;
-    public context: CanvasRenderingContext2D;
     public animationActive: boolean;
-    public showFps: boolean;
-    public offScreenContext: CanvasRenderingContext2D;
+    public initialized: boolean;
+    public canvas: HTMLCanvasElement;
+    public animationStopRequested: boolean;
 
-    private offScreenCanvas: HTMLCanvasElement;
+    public context: CanvasRenderingContext2D;
+
+    // Debug options
+    public showFps: boolean;
     private lastFpsUpdateTime: number;
     private fpsUpdateIntervall: number = 200;
+    private animationCoreObj: AnimationCore;
 
-    constructor(x: number, y: number, width: number, height: number, context: CanvasRenderingContext2D) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.context = context;
-        this.offScreenCanvas = document.createElement("canvas");
-        this.offScreenContext = this.offScreenCanvas.getContext("2d");
+    // hidden layer
+    public hiddenContext: CanvasRenderingContext2D;
+    private hiddenCanvas: HTMLCanvasElement;
+
+    constructor(canvas: HTMLCanvasElement) {
+        if (canvas != undefined) {
+            this.canvas = canvas;
+            this.context = this.canvas.getContext("2d")
+        }
+        else {
+            throw 'Error: StageObject could not be initilized: canvas is undefined';
+        }
+
+        this.width = canvas.width;
+        this.height = canvas.height;
+        this.x = 0;
+        this.y = 0;
+
+        this.hiddenCanvas = document.createElement("canvas");
+        this.hiddenContext = this.hiddenCanvas.getContext("2d");
+
+        this.animationCoreObj = new AnimationCore(this);
+
+        this.initialized = true;
     }
 
-    public drawFps(now: number, lastRun: number) {
+    
+    // ANIMATION
+    public animateObjects(objArr: Array<any>) {
+        return this.animationCoreObj.animateObjects(objArr);
+    };
+
+    public animateObject(obj: any) {
+        return this.animationCoreObj.animateObject(obj);
+    }
+
+    public RequestAnimationStop(): void {
+        this.animationStopRequested = true;
+    }
+
+    // DEBUGGING
+    public drawFps(now: number, lastRun: number): void {
         var fps = 0;
 
         if (this.showFps) {
@@ -41,7 +79,7 @@ class StageObject{
                 var timeDiff = now - lastRun;
                 var lastDrawDiff = now - this.lastFpsUpdateTime;
 
-                // if last run not longer than 1 second and last draw greater than fpsUpdateIntervall second (prevent drawing fps every Update)
+                // if last run not longer than 1 second and last draw greater than fpsUpdateIntervall (prevent drawing fps every Update)
                 if (timeDiff <= 1000 && lastDrawDiff >= this.fpsUpdateIntervall) {
                     fps = 1000 / timeDiff;
 

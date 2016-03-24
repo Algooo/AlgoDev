@@ -3,14 +3,16 @@
 import AlgoDevAnimation = require("app/AlgoDevAnimation");
 
 export class Main {
-      
+
     constructor() {
         
+
     }
 
     public static start() {
-        var algoDevAnimationObj = new AlgoDevAnimation();
-        algoDevAnimationObj.init();
+        var canvas: HTMLCanvasElement = <HTMLCanvasElement>document.getElementById("algoDevCanvas");
+        var algoDevAnimationObj = new AlgoDevAnimation(canvas);
+        algoDevAnimationObj.start();
     }
 }
 

@@ -1,7 +1,6 @@
 "use strict";
 import Drawing = require('ext/canvas/Drawing');
 import StageObject = require('ext/canvas/StageObject');
-import AnimationCore = require('ext/canvas/animation/AnimationCore');
 import AnimationObjects = require('ext/canvas/animation/AnimationObjects');
 import $ = require('jquery');
 
@@ -48,8 +47,6 @@ class AlgoDevCloud {
     private cloudBottomLine: AnimationObjects.LineAnimationObject;
     private cloudGradientFill: AnimationObjects.GradientFillAnimationObject;
 
-    private animationObj: AnimationCore;
-
     constructor(stageObj: StageObject) {
         this.stageObj = stageObj;
 
@@ -61,10 +58,6 @@ class AlgoDevCloud {
         this.strokeStyleColor = new Drawing.RgbaColor(255, 0, 102, 1);
         this.cloudLineCap = "round";
         //////////////
-        //this.cloudLineWidth = 1;
-        //this.cloudWidth = 0;
-        //this.cloudHeight = 0;
-        //this.cloudOrigin = new DrawingExt.Point(0, 0);
 
         // objects
         this.initCloudLeftCurve();
@@ -72,8 +65,6 @@ class AlgoDevCloud {
         this.initCloudRightCurve();
         this.initCloudBottomLine();
         this.initCloudGradientFill();
-
-        this.animationObj = new AnimationCore();
         this.initialized = true;
     }
 
@@ -225,7 +216,7 @@ class AlgoDevCloud {
             this.cloudBottomLine
         ];
 
-        this.animationObj.animateObjects(animationObjectArr, this.stageObj)
+        this.stageObj.animateObjects(animationObjectArr)
             .then((response: any) => {
                 var ctx = this.stageObj.context;
                 this.drawCloudPath();
@@ -256,7 +247,7 @@ class AlgoDevCloud {
         var animObjArr = [
             this.cloudGradientFill
         ];
-        this.animationObj.animateObjects(animObjArr, this.stageObj)
+        this.stageObj.animateObjects(animObjArr)
             .then(function (response: any) {
                 //$.when(this.animateAlgoDevText())
                 //    .done(function (r) {
