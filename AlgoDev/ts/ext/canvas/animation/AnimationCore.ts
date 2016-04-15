@@ -75,7 +75,8 @@ class AnimationCore {
         if (imageData != null) {
             this.stageObject.context.putImageData(imageData, drawingRect.x, drawingRect.y);
         }
-        obj.drawPath(this.stageObject);
+        obj.draw(this.stageObject);
+        this.stageObject.clearFps();
 
         this.stageObject.animationActive = false;
 
@@ -86,6 +87,7 @@ class AnimationCore {
 
         console.log(response);
         this.stageObject.animationActive = false;
+        this.stageObject.clearFps();
 
         objReject();
     }
@@ -103,7 +105,7 @@ class AnimationCore {
         }
 
         // Draw object
-        obj.drawPath(this.stageObject);
+        obj.draw(this.stageObject);
 
         // FPS
         this.stageObject.drawFps(timestamp, this.lastRequestAnimationFrame);

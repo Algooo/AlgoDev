@@ -1,6 +1,5 @@
 ﻿"use strict"
 
-// TODO: any durch Animation Object basis klasse ersetzen
 import StageObject = require("ext/canvas/StageObject");
 import Drawing = require("ext/canvas/Drawing");
 
@@ -60,21 +59,17 @@ module AnimationObjects {
             return null;
         };
 
-        public drawPath() {
+        public draw() {
             this.stageObj.context.save();
             this.stageObj.context.beginPath();
             this.stageObj.context.lineWidth = this.lineWidth;
             this.stageObj.context.lineCap = this.lineCap;
             this.stageObj.context.strokeStyle = this.strokeStyle.toString();
             this.stageObj.context.moveTo(this.startP.x, this.startP.y);
-            this.draw();
-            this.stageObj.context.restore();
-        };
-
-        public draw() {
             this.calculatePositions();
             this.stageObj.context.lineTo(this.progressP.x, this.progressP.y);
             this.stageObj.context.stroke();
+            this.stageObj.context.restore();
         };
 
     }
@@ -142,23 +137,17 @@ module AnimationObjects {
             return null;
         };
 
-
-
-        public drawPath() {
+        public draw() {
             this.stageObj.context.save();
             this.stageObj.context.beginPath();
             this.stageObj.context.lineWidth = this.lineWidth;
             this.stageObj.context.lineCap = this.lineCap;
             this.stageObj.context.strokeStyle = this.strokeStyle.toString();
             this.stageObj.context.moveTo(this.startP.x, this.startP.y);
-            this.draw();
-            this.stageObj.context.restore();
-        };
-
-        public draw() {
             this.calculatePositions();
             this.stageObj.context.quadraticCurveTo(this.curControlP.x, this.curControlP.y, this.progressP.x, this.progressP.y);
             this.stageObj.context.stroke();
+            this.stageObj.context.restore();
         };
     }
 
@@ -210,13 +199,8 @@ module AnimationObjects {
             return null;
         }
 
-        public drawPath() {
-            this.stageObj.context.save();
-            this.draw();
-            this.stageObj.context.restore();
-        }
-
         public draw() {
+            this.stageObj.context.save();
             if (this.progress + this.distance >= 1) {
                 this.stageObj.context.fillStyle = this.fillStyle.toString();
             }
@@ -230,6 +214,7 @@ module AnimationObjects {
                 this.stageObj.context.fillStyle = gradient;
             }
             this.stageObj.context.fill();
+            this.stageObj.context.restore();
         }
     }
 }

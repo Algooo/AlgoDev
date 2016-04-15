@@ -50,10 +50,12 @@ class StageObject{
     
     // ANIMATION
     public animateObjects(objArr: Array<any>) {
+        this.animationStopRequested = false;
         return this.animationCoreObj.animateObjects(objArr);
     };
 
     public animateObject(obj: any) {
+        this.animationStopRequested = false;
         return this.animationCoreObj.animateObject(obj);
     }
 
@@ -82,11 +84,12 @@ class StageObject{
                 // if last run not longer than 1 second and last draw greater than fpsUpdateIntervall (prevent drawing fps every Update)
                 if (timeDiff <= 1000 && lastDrawDiff >= this.fpsUpdateIntervall) {
                     fps = 1000 / timeDiff;
+                    var text = Math.round(fps) + " fps";
 
+                    this.clearFps();
                     this.context.save();
-                    this.context.clearRect(this.x + 5, this.y + 5, 150, 30);
-                    this.context.font = 'normal 20pt Consolas';
-                    this.context.fillText(Math.round(fps) + " fps", this.x + 10, this.y + 25);
+                    this.context.font = 'normal 15pt Consolas';
+                    this.context.fillText(text, this.x + 10, this.y + 25, 100);
                     this.context.restore();
 
                     this.lastFpsUpdateTime = now;
@@ -94,6 +97,12 @@ class StageObject{
             }
         }
     };
+
+    public clearFps() {
+        if (this.showFps) {
+            this.context.clearRect(this.x + 10, this.y + 10, 100, 20);
+        }
+    }
 }
 
 export = StageObject;

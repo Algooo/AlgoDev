@@ -3,29 +3,9 @@ import Drawing = require('ext/canvas/Drawing');
 import StageObject = require('ext/canvas/StageObject');
 import AnimationObjects = require('ext/canvas/animation/AnimationObjects');
 import $ = require('jquery');
+import MathExt = require('ext/MathExt');
 
 //import AlgoDevText = require('app/algoDevText');
-
-// TODO Auslagern in mathExt
-class MathExt {
-
-    public static half(num: number): number {
-        return num / 2;
-    }
-    public static third(num: number): number {
-        return num / 3;
-    }
-    public static quarter(num: number): number {
-        return num / 4;
-    }
-    public static eighth(num: number): number {
-        return num / 8;
-    }
-    public static sixteenth(num: number): number {
-        return num / 16;
-    }
-}
-/////////////////////////
 
 class AlgoDevCloud {
     
@@ -54,10 +34,6 @@ class AlgoDevCloud {
 
         this.strokeStyleColor = new Drawing.RgbaColor(0, 0, 0, 1)
         this.cloudLineCap = "butt";
-        // TODO auslagern in aufrufende Klasse
-        this.strokeStyleColor = new Drawing.RgbaColor(255, 0, 102, 1);
-        this.cloudLineCap = "round";
-        //////////////
 
         // objects
         this.initCloudLeftCurve();
@@ -187,22 +163,15 @@ class AlgoDevCloud {
         }
     };
 
-    private drawCloudPath() {
+    private createCloudPath() {
         var ctx = this.stageObj.context;
 
-        ctx.clearRect(this.stageObj.x, this.stageObj.y, this.stageObj.width, this.stageObj.height);
-
-        ctx.save();
         ctx.beginPath();
-        ctx.strokeStyle = this.strokeStyleColor.toString();
-        ctx.lineWidth = this.cloudLineWidth;
-        ctx.lineCap = this.cloudLineCap;
         ctx.moveTo(this.cloudLeftCurve.startP.x, this.cloudLeftCurve.startP.y)
-        this.cloudLeftCurve.draw();
-        this.cloudMiddleCurve.draw();
-        this.cloudRightCurve.draw();
-        this.cloudBottomLine.draw();
-        ctx.restore();
+        ctx.quadraticCurveTo(this.cloudLeftCurve.controlP.x, this.cloudLeftCurve.controlP.y, this.cloudLeftCurve.endP.x, this.cloudLeftCurve.endP.y);
+        ctx.quadraticCurveTo(this.cloudMiddleCurve.controlP.x, this.cloudMiddleCurve.controlP.y, this.cloudMiddleCurve.endP.x, this.cloudMiddleCurve.endP.y);
+        ctx.quadraticCurveTo(this.cloudRightCurve.controlP.x, this.cloudRightCurve.controlP.y, this.cloudRightCurve.endP.x, this.cloudRightCurve.endP.y);
+        ctx.lineTo(this.cloudBottomLine.endP.x, this.cloudBottomLine.endP.y);
     };
 
     // TODO ES6 Promise umwandeln
@@ -219,7 +188,7 @@ class AlgoDevCloud {
         this.stageObj.animateObjects(animationObjectArr)
             .then((response: any) => {
                 var ctx = this.stageObj.context;
-                this.drawCloudPath();
+                this.createCloudPath();
                 $.when(this.animateCloudGradientFill())
                     .done(function (r) {
                         animCloudDef.resolve();

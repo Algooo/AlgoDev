@@ -28,6 +28,7 @@
     <TypeScriptCompile Include="ts\app\main.ts" />
     <TypeScriptCompile Include="ts\ext\canvas\animation\AnimationCore.ts" />
     <TypeScriptCompile Include="ts\ext\canvas\animation\AnimationObjects.ts" />
+    <TypeScriptCompile Include="ts\ext\MathExt.ts" />
     <TypeScriptCompile Include="ts\requirejsConfig.ts" />
     <TypeScriptCompile Include="ts\app\AlgoDevAnimation.ts" />
     <TypeScriptCompile Include="ts\ext\canvas\Drawing.ts" />

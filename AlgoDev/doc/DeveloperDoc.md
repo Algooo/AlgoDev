@@ -4,6 +4,8 @@ Install VisualStudio2015
 
 Install NodeJs
 	https://nodejs.org
+Install bower 
+Install grunt
 
 Get Project from Github
 	https://github.com/Algooo/AlgoDev
