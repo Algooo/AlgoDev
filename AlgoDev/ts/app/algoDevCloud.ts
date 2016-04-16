@@ -1,7 +1,9 @@
 "use strict";
 import Drawing = require('ext/canvas/Drawing');
 import StageObject = require('ext/canvas/StageObject');
-import AnimationObjects = require('ext/canvas/animation/AnimationObjects');
+import QuadraticCurveAnimationObject = require("ext/canvas/animation/animationObjects/QuadraticCurveAnimationObject");
+import LineAnimationObject = require("ext/canvas/animation/animationObjects/LineAnimationObject");
+import GradientFillAnimationObject = require("ext/canvas/animation/animationObjects/GradientFillAnimationObject");
 import $ = require('jquery');
 import MathExt = require('ext/MathExt');
 
@@ -13,19 +15,41 @@ class AlgoDevCloud {
     public initialized: boolean;
 
     // Cloud Logo options
-    public strokeStyleColor: Drawing.RgbaColor;
-    public cloudLineCap: string;
+    private strokeStyleColor: Drawing.RgbaColor;
+    get StrokeStyleColor(): Drawing.RgbaColor {
+        return this.strokeStyleColor;
+    }
+    set StrokeStyleColor(strokeStyleColor: Drawing.RgbaColor) {
+        this.strokeStyleColor = strokeStyleColor;
+        this.cloudLeftCurve.strokeStyle = strokeStyleColor;
+        this.cloudMiddleCurve.strokeStyle = strokeStyleColor;
+        this.cloudRightCurve.strokeStyle = strokeStyleColor;
+        this.cloudBottomLine.strokeStyle = strokeStyleColor;
+        this.cloudGradientFill.fillStyle = strokeStyleColor;
+    }
+
+    private cloudLineCap: string;
+    get CloudLineCap(): string{
+        return this.cloudLineCap;
+    }
+    set CloudLineCap(cloudLineCap: string) {
+        this.cloudLineCap = cloudLineCap;
+        this.cloudLeftCurve.lineCap = cloudLineCap;
+        this.cloudMiddleCurve.lineCap = cloudLineCap;
+        this.cloudRightCurve.lineCap = cloudLineCap;
+        this.cloudBottomLine.lineCap = cloudLineCap;
+    }
 
     private cloudLineWidth: number;
     private cloudWidth: number;
     private cloudHeight: number;
     private cloudOrigin: Drawing.Point;
 
-    private cloudLeftCurve: AnimationObjects.QuadraticCurveAnimationObject;
-    private cloudMiddleCurve: AnimationObjects.QuadraticCurveAnimationObject;
-    private cloudRightCurve: AnimationObjects.QuadraticCurveAnimationObject;
-    private cloudBottomLine: AnimationObjects.LineAnimationObject;
-    private cloudGradientFill: AnimationObjects.GradientFillAnimationObject;
+    private cloudLeftCurve: QuadraticCurveAnimationObject;
+    private cloudMiddleCurve: QuadraticCurveAnimationObject;
+    private cloudRightCurve: QuadraticCurveAnimationObject;
+    private cloudBottomLine: LineAnimationObject;
+    private cloudGradientFill: GradientFillAnimationObject;
 
     constructor(stageObj: StageObject) {
         this.stageObj = stageObj;
@@ -45,7 +69,7 @@ class AlgoDevCloud {
     }
 
     private initCloudLeftCurve = function () {
-        this.cloudLeftCurve = new AnimationObjects.QuadraticCurveAnimationObject(this.stageObj);
+        this.cloudLeftCurve = new QuadraticCurveAnimationObject(this.stageObj);
         this.cloudLeftCurve.strokeStyle = this.strokeStyleColor;
         this.cloudLeftCurve.lineCap = this.cloudLineCap;
         this.cloudLeftCurve.duration = 500;
@@ -53,7 +77,7 @@ class AlgoDevCloud {
     };
 
     private initCloudMiddleCurve() {
-        this.cloudMiddleCurve = new AnimationObjects.QuadraticCurveAnimationObject(this.stageObj);
+        this.cloudMiddleCurve = new QuadraticCurveAnimationObject(this.stageObj);
         this.cloudMiddleCurve.strokeStyle = this.strokeStyleColor;
         this.cloudMiddleCurve.lineCap = this.cloudLineCap;
         this.cloudMiddleCurve.duration = 500;
@@ -61,7 +85,7 @@ class AlgoDevCloud {
     };
 
     private initCloudRightCurve() {
-        this.cloudRightCurve = new AnimationObjects.QuadraticCurveAnimationObject(this.stageObj);
+        this.cloudRightCurve = new QuadraticCurveAnimationObject(this.stageObj);
         this.cloudRightCurve.strokeStyle = this.strokeStyleColor;
         this.cloudRightCurve.lineCap = this.cloudLineCap;
         this.cloudRightCurve.duration = 500;
@@ -69,7 +93,7 @@ class AlgoDevCloud {
     };
 
     private initCloudBottomLine() {
-        this.cloudBottomLine = new AnimationObjects.LineAnimationObject(this.stageObj);
+        this.cloudBottomLine = new LineAnimationObject(this.stageObj);
         this.cloudBottomLine.strokeStyle = this.strokeStyleColor;
         this.cloudBottomLine.lineCap = this.cloudLineCap;
         this.cloudBottomLine.duration = 500;
@@ -77,7 +101,7 @@ class AlgoDevCloud {
     };
 
     private initCloudGradientFill() {
-        this.cloudGradientFill = new AnimationObjects.GradientFillAnimationObject(this.stageObj);
+        this.cloudGradientFill = new GradientFillAnimationObject(this.stageObj);
         this.cloudGradientFill.fillStyle = this.strokeStyleColor;
         this.cloudGradientFill.duration = 1000;
         this.cloudGradientFill.distance = 0.1;
@@ -200,8 +224,10 @@ class AlgoDevCloud {
                     });
                 return;
             })
-            .catch(function (response: any) {
-                console.log(response);
+            .catch(function (response: string) {
+                if (response != undefined) {
+                    console.log(response);
+                }
                 animCloudDef.reject();
                 return
             });
@@ -231,7 +257,9 @@ class AlgoDevCloud {
                 return;
             })
             .catch(function (response: any) {
-                console.log(response);
+                if (response != undefined) {
+                    console.log(response);
+                }
                 animGradientDef.reject();
                 return;
             });

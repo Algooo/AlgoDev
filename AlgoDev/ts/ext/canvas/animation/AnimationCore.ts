@@ -2,6 +2,8 @@
 
 import RequestNextAnimationFrame = require('ext/canvas/animation/RequestNextAnimationFrame');
 import StageObject = require("ext/canvas/StageObject");
+import Drawing = require("ext/canvas/Drawing");
+import AnimationObjectBase = require("ext/canvas/animation/AnimationObjects/AnimationObjectBase");
 
 // TODO Animation static machen und properties in StageObject auslagern
 class AnimationCore {
@@ -13,24 +15,30 @@ class AnimationCore {
         this.stageObject = stageObject;
     }
 
-    public animateObjects(objArr: Array<any>) {
+    public animateObjects(objArr: Array<AnimationObjectBase>) {
         return new Promise((arrayResolve, arrayReject) =>
             this.animateObjectsResolver(arrayResolve, arrayReject, objArr, 0)
         );
     };
 
-    private animateObjectsResolver(mainResolve: PromiseResolve, mainReject: PromiseReject, objArr: Array<any>, index: number): void {
+    private animateObjectsResolver(mainResolve: PromiseResolve, mainReject: PromiseReject, objArr: Array<AnimationObjectBase>, index: number): void {
         this.animateObject(objArr[index])
             .then(() =>
                 this.animateNextObject(mainResolve, mainReject, objArr, index)
             )
-            .catch(function (response) {
-                console.log(response);
-                mainReject();
-            });
+            .catch(
+                (response) => this.animateObjectsReject(mainReject, response)      
+            );
     };
 
-    private animateNextObject(mainResolve: PromiseResolve, mainReject: PromiseReject, objArr: Array<any>, index: number) {
+    private animateObjectsReject(mainReject: PromiseReject, response: string): void {
+        if (response != undefined) {
+            console.log(response);
+        }
+        mainReject();
+    }
+
+    private animateNextObject(mainResolve: PromiseResolve, mainReject: PromiseReject, objArr: Array<AnimationObjectBase>, index: number) {
         var newIndex = index + 1;
         if (newIndex < objArr.length) {
             this.animateObjectsResolver(mainResolve, mainReject, objArr, newIndex);
@@ -39,10 +47,10 @@ class AnimationCore {
         mainResolve();
     }
 
-    public animateObject(obj: any) {
+    public animateObject(obj: AnimationObjectBase) {
         // Save image Data before animating
         this.stageObject.animationActive = true;
-        var drawingRect = obj.getDrawingRectangle(this.stageObject);
+        var drawingRect = obj.getDrawingRectangle();
         var imageData: ImageData;
         if (drawingRect != null) {
             imageData = this.stageObject.context.getImageData(drawingRect.x, drawingRect.y, drawingRect.width, drawingRect.height);
@@ -60,22 +68,22 @@ class AnimationCore {
 
     };
 
-    private animateObjectResolver(objResolve: PromiseResolve, objReject: PromiseReject, obj: any, end: number, imageData: ImageData, drawingRect: any): void {
+    private animateObjectResolver(objResolve: PromiseResolve, objReject: PromiseReject, obj: AnimationObjectBase, end: number, imageData: ImageData, drawingRect: Drawing.Rectangle): void {
         var animObjEndPromise = new Promise((framesResolve, framesReject) => this.step(framesResolve, framesReject, obj, end, imageData));
         animObjEndPromise.then(
             () => this.animateObjectEndResolve(objResolve, obj, imageData, drawingRect)
         ).catch(
-            (response) => this.animateObjectEndReject(Object, response)
+            (response) => this.animateObjectEndReject(objReject, response)
         );
     }
 
 
-    private animateObjectEndResolve(objResolve: PromiseResolve, obj: any, imageData: ImageData, drawingRect: any): void {
+    private animateObjectEndResolve(objResolve: PromiseResolve, obj: AnimationObjectBase, imageData: ImageData, drawingRect: Drawing.Rectangle): void {
         // Restore ImageData after animation and Draw full progress
         if (imageData != null) {
             this.stageObject.context.putImageData(imageData, drawingRect.x, drawingRect.y);
         }
-        obj.draw(this.stageObject);
+        obj.draw();
         this.stageObject.clearFps();
 
         this.stageObject.animationActive = false;
@@ -83,19 +91,20 @@ class AnimationCore {
         objResolve();
     }
 
-    private animateObjectEndReject(objReject: PromiseReject, response: any): void {
-
-        console.log(response);
+    private animateObjectEndReject(objReject: PromiseReject, response: string): void {
+        if (response != undefined) {
+            console.log(response);
+        }
         this.stageObject.animationActive = false;
         this.stageObject.clearFps();
 
         objReject();
     }
 
-    private step(framesResolve: PromiseResolve, framesReject: PromiseReject, obj: any, end: number, imgDataBeforeAnimation: ImageData) {
+    private step(framesResolve: PromiseResolve, framesReject: PromiseReject, obj: AnimationObjectBase, end: number, imgDataBeforeAnimation: ImageData) {
         let self = this;
         var timestamp = new Date().getTime();
-        var drawingRect = obj.getDrawingRectangle(this.stageObject);
+        var drawingRect = obj.getDrawingRectangle();
 
         obj.progress = Math.min((obj.duration - (end - timestamp)) / obj.duration, 1);
 
@@ -105,7 +114,7 @@ class AnimationCore {
         }
 
         // Draw object
-        obj.draw(this.stageObject);
+        obj.draw();
 
         // FPS
         this.stageObject.drawFps(timestamp, this.lastRequestAnimationFrame);

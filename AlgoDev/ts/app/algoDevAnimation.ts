@@ -20,8 +20,8 @@ class AlgoDevAnimation {
 
         // Initialize Cloud
         this.algoDevCloudObj = new AlgoDevCloud(this.stageObject);
-        this.algoDevCloudObj.strokeStyleColor = new Drawing.RgbaColor(255, 0, 102, 1);
-        this.algoDevCloudObj.cloudLineCap = "round";
+        this.algoDevCloudObj.StrokeStyleColor = new Drawing.RgbaColor(255, 0, 102, 1);
+        this.algoDevCloudObj.CloudLineCap = "round";
 
         this.initialized = true;
     }
