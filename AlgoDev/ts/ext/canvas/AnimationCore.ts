@@ -1,9 +1,9 @@
 ﻿"use strict"
 
-import RequestNextAnimationFrame = require('ext/canvas/animation/RequestNextAnimationFrame');
+import RequestNextAnimationFrame = require('ext/canvas/RequestNextAnimationFrame');
 import StageObject = require("ext/canvas/StageObject");
 import Drawing = require("ext/canvas/Drawing");
-import AnimationObjectBase = require("ext/canvas/animation/AnimationObjects/AnimationObjectBase");
+import AnimationObjectBase = require("ext/canvas/animationObjects/AnimationObjectBase");
 
 // TODO Animation static machen und properties in StageObject auslagern
 class AnimationCore {

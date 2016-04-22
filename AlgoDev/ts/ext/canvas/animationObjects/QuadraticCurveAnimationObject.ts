@@ -2,7 +2,7 @@
 
 import StageObject = require("ext/canvas/StageObject");
 import Drawing = require("ext/canvas/Drawing");
-import AnimationObjectBase = require("ext/canvas/animation/animationObjects/AnimationObjectBase");
+import AnimationObjectBase = require("ext/canvas/animationObjects/AnimationObjectBase");
 
 class QuadraticCurveAnimationObject extends AnimationObjectBase {
     public stageObj: StageObject;    

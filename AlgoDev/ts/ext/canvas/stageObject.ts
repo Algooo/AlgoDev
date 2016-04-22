@@ -1,6 +1,7 @@
 "use strict";
 
-import AnimationCore = require('ext/canvas/animation/AnimationCore');
+import AnimationCore = require('ext/canvas/AnimationCore');
+import AnimationObjectBase = require('ext/canvas/animationObjects/AnimationObjectBase');
 
 class StageObject{
 
@@ -49,12 +50,12 @@ class StageObject{
 
     
     // ANIMATION
-    public animateObjects(objArr: Array<any>) {
+    public animateObjects(objArr: Array<AnimationObjectBase>) {
         this.animationStopRequested = false;
         return this.animationCoreObj.animateObjects(objArr);
     };
 
-    public animateObject(obj: any) {
+    public animateObject(obj: AnimationObjectBase) {
         this.animationStopRequested = false;
         return this.animationCoreObj.animateObject(obj);
     }

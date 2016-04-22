@@ -1,16 +1,16 @@
 "use strict";
 import Drawing = require('ext/canvas/Drawing');
 import StageObject = require('ext/canvas/StageObject');
-import QuadraticCurveAnimationObject = require("ext/canvas/animation/animationObjects/QuadraticCurveAnimationObject");
-import LineAnimationObject = require("ext/canvas/animation/animationObjects/LineAnimationObject");
-import GradientFillAnimationObject = require("ext/canvas/animation/animationObjects/GradientFillAnimationObject");
+import QuadraticCurveAnimationObject = require("ext/canvas/animationObjects/QuadraticCurveAnimationObject");
+import LineAnimationObject = require("ext/canvas/animationObjects/LineAnimationObject");
+import GradientFillAnimationObject = require("ext/canvas/animationObjects/GradientFillAnimationObject");
 import $ = require('jquery');
 import MathExt = require('ext/MathExt');
 
 //import AlgoDevText = require('app/algoDevText');
 
 class AlgoDevCloud {
-    
+
     private stageObj: StageObject;
     public initialized: boolean;
 
@@ -29,7 +29,7 @@ class AlgoDevCloud {
     }
 
     private cloudLineCap: string;
-    get CloudLineCap(): string{
+    get CloudLineCap(): string {
         return this.cloudLineCap;
     }
     set CloudLineCap(cloudLineCap: string) {
@@ -108,7 +108,8 @@ class AlgoDevCloud {
         this.resizeCloudGradientFill();
     };
 
-    public resizeCloud() {;
+    public resizeCloud() {
+        ;
         this.cloudLineWidth = this.stageObj.width > this.stageObj.height ? this.stageObj.width / 20 : this.stageObj.height / 20;
         this.cloudWidth = this.stageObj.width - this.cloudLineWidth * 2;
         this.cloudHeight = this.stageObj.height - this.cloudLineWidth * 2;
@@ -155,7 +156,7 @@ class AlgoDevCloud {
     private resizeCloudRightCurve() {
         if (this.cloudRightCurve != null) {
             var cw = this.cloudWidth;
-            var ch = this.cloudHeight;    
+            var ch = this.cloudHeight;
 
             this.cloudRightCurve.lineWidth = this.cloudLineWidth;
             this.cloudRightCurve.startP = new Drawing.Point(this.cloudOrigin.x + (MathExt.third(cw) * 2) + MathExt.sixteenth(cw),
@@ -198,10 +199,33 @@ class AlgoDevCloud {
         ctx.lineTo(this.cloudBottomLine.endP.x, this.cloudBottomLine.endP.y);
     };
 
-    // TODO ES6 Promise umwandeln
     public animateCloud() {
-        var animCloudDef = $.Deferred<void>();
+        return new Promise(
+            (resolve, reject) => this.animateCloudResolver(resolve, reject)
+         );
+       
+        //.then(() => this.animateCloudText());
+    }
 
+    private animateCloudResolver(resolve: PromiseResolve, reject: PromiseReject): void {
+        this.animateCloudBorder().then(
+            () => this.animationCloudFill()
+        ).catch(
+            (response: string) => reject()
+        ).then(
+            () => resolve()
+        ).catch(
+            (response: string) => reject()
+        );
+    }
+
+    private animateCloudBorder(): Promise<{}> {
+        return new Promise((resolve, reject) =>
+            this.animateCloudBorderResolver(resolve, reject)
+        );
+    };
+
+    private animateCloudBorderResolver(resolve: PromiseResolve, reject: PromiseReject): void {
         var animationObjectArr = [
             this.cloudLeftCurve,
             this.cloudMiddleCurve,
@@ -210,70 +234,41 @@ class AlgoDevCloud {
         ];
 
         this.stageObj.animateObjects(animationObjectArr)
-            .then((response: any) => {
-                var ctx = this.stageObj.context;
-                this.createCloudPath();
-                $.when(this.animateCloudGradientFill())
-                    .done(function (r) {
-                        animCloudDef.resolve();
-                        return;
-                    })
-                    .fail(function (r) {
-                        animCloudDef.reject();
-                        return;
-                    });
-                return;
+            .then(() => {
+                resolve();
             })
-            .catch(function (response: string) {
+            .catch((response: string) => {
                 if (response != undefined) {
                     console.log(response);
                 }
-                animCloudDef.reject();
-                return
+                reject();
             });
-
-        return animCloudDef.promise();
     };
 
-    // TODO ES6 Promise umwandeln
-    private animateCloudGradientFill() {
-        var animGradientDef = $.Deferred<void>();
+    private animationCloudFill(): Promise<{}> {
+        return new Promise((resolve, reject) =>
+            this.animateCloudFillResolver(resolve, reject)
+        );
+    }
 
+    private animateCloudFillResolver(resolve: PromiseResolve, reject: PromiseReject): void {
         var animObjArr = [
             this.cloudGradientFill
         ];
-        this.stageObj.animateObjects(animObjArr)
-            .then(function (response: any) {
-                //$.when(this.animateAlgoDevText())
-                //    .done(function (r) {
-                //        animGradientDef.resolve();
-                //        return;
-                //    })
-                //    .fail(function (r) {
-                //        animGradientDef.resolve();
-                //        return;
-                //    });
 
-                return;
+        var ctx = this.stageObj.context;
+        this.createCloudPath();
+
+        this.stageObj.animateObjects(animObjArr)
+            .then(() => {
+                resolve();
             })
-            .catch(function (response: any) {
+            .catch((response: string) => {
                 if (response != undefined) {
                     console.log(response);
                 }
-                animGradientDef.reject();
-                return;
+                reject();
             });
-
-        return animGradientDef.promise();
-    };
-
-    private animateAlgoDevText = function () {
-        //var animTextDef = $.Deferred<void>();
-
-        //algoDevText.init();
-
-
-        //return animTextDef.promise();
     };
 }
 

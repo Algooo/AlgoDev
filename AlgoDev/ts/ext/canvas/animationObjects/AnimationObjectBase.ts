@@ -7,8 +7,8 @@ import Drawing = require("ext/canvas/Drawing");
 abstract class AnimationObjectBase {
     public stageObj: StageObject;
 
-    public progress = 0; // must be between 0 and 1
-    public duration = 1000; // animation duration in ms
+    public progress: number = 0; // must be between 0 and 1
+    public duration: number = 1000; // animation duration in ms
 
     constructor(stageObj: StageObject) {
         this.stageObj = stageObj;
