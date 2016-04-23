@@ -26,7 +26,7 @@ class LineAnimationObject extends AnimationObjectBase {
         this.progressP.y = this.startP.y + (this.endP.y - this.startP.y) * this.progress;
     };
 
-    public getDrawingRectangle() {
+    public getDrawingRectangle(): Drawing.Rectangle {
         var drawingOrigin = new Drawing.Point(0, 0);
         var width = 0;
         var height = 0;
@@ -36,24 +36,24 @@ class LineAnimationObject extends AnimationObjectBase {
         var minX = Math.min(this.startP.x, this.endP.x);
         var minY = Math.min(this.startP.y, this.endP.y);
 
-        if (maxX - minX > 0) {
+        //if (maxX - minX > 0) {
             drawingOrigin.x = minX;
             width = maxX - minX;
-        }
+        //}
 
-        if (maxY - minY > 0) {
+        //if (maxY - minY > 0) {
             drawingOrigin.y = minY;
             height = maxY - minY;
-        }
+        //}
 
-        if (width > 0 && height > 0) {
+        //if (width > 0 && height > 0) {
             drawingOrigin.x -= this.lineWidth;
             drawingOrigin.y -= this.lineWidth;
             width += this.lineWidth * 2;
             height += this.lineWidth * 2;
             return new Drawing.Rectangle(drawingOrigin.x, drawingOrigin.y, width, height);
-        }
-        return null;
+        //}
+        //return null;
     };
 
     public draw() {

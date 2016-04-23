@@ -7,7 +7,7 @@ import AnimationObjectBase = require("ext/canvas/animationObjects/AnimationObjec
 class RadialGradientAnimationObject extends AnimationObjectBase {
     public stageObj: StageObject;
 
-    public fillStyle = new Drawing.RgbaColor(0, 0, 0, 1);
+    public gradientStyle: CanvasGradient;
     public startP = new Drawing.Point(0, 0);
     public startR: number = 0;
     public startAngle: number = 0;
@@ -44,27 +44,29 @@ class RadialGradientAnimationObject extends AnimationObjectBase {
         var maxY = Math.max(this.startP.y, this.endP.y);
         var maxR = Math.max(this.startR, this.endR);
 
-        if (maxX - minX > 0) {
+        //if (maxX - minX > 0) {
             origin.x = minX - maxR;
             width = (maxX - minX) + (2 * maxR);
-        }
+        //}
 
-        if (maxY - minY > 0) {
+        //if (maxY - minY > 0) {
             origin.y = minY + maxR;
             height = (maxY - minY) + (2 * maxR);
-        }
+        //}
 
-        if (width > 0 && height > 0) {
+        //if (width > 0 && height > 0) {
             return new Drawing.Rectangle(origin.x, origin.y, width, height);
-        }
-        return null;
+        //}
+        //return null;
     };
 
     public draw() {
+        this.calculatePositions();
         this.stageObj.context.save();
         this.stageObj.context.beginPath();
-        this.stageObj.context.arc(this.progressP.x, this.progressP.y, this.progressR, 0, Math.PI * 2, false);
-        this.stageObj.context.fillStyle = this.fillStyle;
+        this.stageObj.context.arc(this.progressP.x, this.progressP.y, this.progressR, this.startAngle, this.endAngle, false);
+        this.stageObj.context.closePath();
+        this.stageObj.context.fillStyle = this.gradientStyle;
         this.stageObj.context.fill();
         this.stageObj.context.restore();
     };

@@ -29,6 +29,17 @@ module Drawing {
         }
     }
 
+
+    export class ColorStop {
+        public offset: number;
+        public color: string;
+
+        constructor(offset: number, color: string) {
+            this.offset = offset;
+            this.color = color;
+        }
+    }
+
     export class Rectangle {
         public x: number;
         public y: number;

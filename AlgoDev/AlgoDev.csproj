@@ -26,6 +26,7 @@
     <Content Include="Gruntfile.js" />
     <Content Include="index.html" />
     <TypeScriptCompile Include="ts\app\main.ts" />
+    <TypeScriptCompile Include="ts\app\SparkleLineAnimationObject.ts" />
     <TypeScriptCompile Include="ts\ext\canvas\AnimationCore.ts" />
     <TypeScriptCompile Include="ts\ext\canvas\animationObjects\AnimationObjectBase.ts" />
     <TypeScriptCompile Include="ts\ext\canvas\animationObjects\GradientFillAnimationObject.ts" />
