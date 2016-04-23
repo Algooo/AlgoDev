@@ -29,6 +29,7 @@
     <TypeScriptCompile Include="ts\ext\canvas\AnimationCore.ts" />
     <TypeScriptCompile Include="ts\ext\canvas\animationObjects\AnimationObjectBase.ts" />
     <TypeScriptCompile Include="ts\ext\canvas\animationObjects\GradientFillAnimationObject.ts" />
+    <TypeScriptCompile Include="ts\ext\canvas\animationObjects\RadialGradientAnimationObject.ts" />
     <TypeScriptCompile Include="ts\ext\canvas\animationObjects\LineAnimationObject.ts" />
     <TypeScriptCompile Include="ts\ext\canvas\animationObjects\QuadraticCurveAnimationObject.ts" />
     <TypeScriptCompile Include="ts\ext\MathExt.ts" />
