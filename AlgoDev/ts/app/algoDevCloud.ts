@@ -104,11 +104,14 @@ class AlgoDevCloud {
         this.cloudBottomLine.lineCap = this.cloudLineCap;
         this.cloudBottomLine.duration = 500;
         this.resizeCloudBottomLine();
+
         this.cloudBottomLine.sparkleColorStops.push(new Drawing.ColorStop(0, new Drawing.RgbaColor(255, 255, 255, 1).toString()));
         this.cloudBottomLine.sparkleColorStops.push(new Drawing.ColorStop(0.5,
             new Drawing.RgbaColor(255, 255, 255, 1).toString()));
+        this.cloudBottomLine.sparkleColorStops.push(new Drawing.ColorStop(0.6,
+            new Drawing.RgbaColor(this.strokeStyleColor.r, this.strokeStyleColor.g, this.strokeStyleColor.b, 0.5).toString()));
         this.cloudBottomLine.sparkleColorStops.push(new Drawing.ColorStop(1,
-            new Drawing.RgbaColor(255, 255, 255, 0).toString()));
+            new Drawing.RgbaColor(this.strokeStyleColor.r, this.strokeStyleColor.g, this.strokeStyleColor.b, 0).toString()));
     };
 
     private initCloudGradientFill() {
